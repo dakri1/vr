@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load category_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>{{post.title}}</title>
+        <style>
+    </style>
+</head>
+<body>
+{% block content %}
+<div class="bg-slate-50">
+<section id="programs" class="bg-slate-50 container mx-auto px-20">
+    <br>
+<h1 class="text-center text-3xl font-bold text-gray-800">{{ post.title }}</h1>
+<h1 class="text-center text-xl text-gray-800">Автор: {{ post.author }}</h1><br>
+  <div class="max-w-2xl mx-auto px-5">
+      <div class="flex justify-between items-center mb-12">
+          <img class="h-41" src="{{post.photo.url}}" alt="Hotel Photo" />
+    </div>
+
+  </div>
+    <section class="px-18">
+<h4 class="text-xl text-gray-800">{{ post.content|linebreaksbr }}</h4>
+</section><br>
+</section>
+
+<section class="bg-slate-100 dark:bg-gray-900 py-8 lg:py-16">
+  <div class="max-w-2xl mx-auto px-10">
+      <div class="flex justify-between items-center mb-2">
+        <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Комментарии</h2>
+    </div>
+    <form method="post" class="mb-10">
+        {% csrf_token %}
+        <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+            {{form}}
+        </div>
+        <button type="submit"
+            class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center bg-orange-200 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+            Post comment
+        </button>
+    </form>
+      {% get_comments post_id=post.id as comments %}
+      {% for comment in comments %}
+
+    <article class="p-6 mb-6 border rounded-lg border-orange-200 text-base bg-white rounded-lg dark:bg-gray-900">
+        <footer class="flex justify-between items-center mb-2">
+            <div class="flex items-center ">
+                <p class="inline-flex justify-end mr-3 text-base text-gray-900 dark:text-white">@{{ comment.author }}</p>
+                <p class="text-sm text-right text-gray-600 dark:text-gray-400"><time
+                        >{{ comment.time_create }}</time></p>
+            </div>
+            <!-- Dropdown menu -->
+        </footer>
+        <p class="text-gray-800">{{ comment.text }}</p>
+        <div class="flex items-center mt-4 space-x-4">
+        </div>
+    </article>
+
+      {% endfor %}
+
+  </div>
+</section>
+    </div>
+{% endblock content %}
+
+</body>
+</html>
